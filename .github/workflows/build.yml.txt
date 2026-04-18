@@ -3,7 +3,7 @@ name: Build Android APK
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*'              # Se activa cuando creás un tag como v1.0.0
 
 jobs:
   build:
@@ -22,23 +22,21 @@ jobs:
         run: npm install
       
       - name: Construir web app
-        run: npm run build
+        run: npm run build      # Vite genera la carpeta dist
       
-      - name: Instalar Capacitor
-        run: npm install @capacitor/cli @capacitor/core @capacitor/android
-      
-      - name: Sincronizar con Capacitor (crea android si no existe)
+      - name: Sincronizar con Capacitor
         run: npx cap sync
       
-      - name: Dar permisos a Gradle
-        run: chmod +x android/gradlew
+      - name: Agregar plataforma Android
+        run: npx cap add android
       
-      - name: Construir APK
+      - name: Construir APK con Gradle
         run: |
           cd android
+          chmod +x gradlew
           ./gradlew assembleDebug
       
-      - name: Subir APK
+      - name: Subir APK como artefacto
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
