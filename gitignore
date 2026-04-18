@@ -1,0 +1,15 @@
+# Dependencias (son gigantes, se instalan con npm install)
+node_modules/
+
+# Archivos de construcción de Capacitor (se generan con npx cap sync)
+android/
+ios/
+
+# Archivos locales y de editor
+.DS_Store
+dist/
+.vscode/
+.idea/
+
+# Archivos de log
+npm-debug.log*
