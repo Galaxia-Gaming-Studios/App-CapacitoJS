@@ -56,6 +56,7 @@ window.customElements.define(
       }
     </style>
     <div>
+      <h1>Hola </h1>
       <capacitor-welcome-titlebar>
         <h1>Capacitor</h1>
       </capacitor-welcome-titlebar>
