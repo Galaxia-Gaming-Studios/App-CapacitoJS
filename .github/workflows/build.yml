@@ -1,0 +1,43 @@
+name: Build Android APK
+
+on:
+  push:
+    tags:
+      - 'v*'              # Se activa cuando creás un tag como v1.0.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkar código
+        uses: actions/checkout@v3
+      
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Instalar dependencias
+        run: npm install
+      
+      - name: Construir web app
+        run: npm run build      # Vite genera la carpeta dist
+      
+      - name: Sincronizar con Capacitor
+        run: npx cap sync
+      
+      - name: Agregar plataforma Android
+        run: npx cap add android
+      
+      - name: Construir APK con Gradle
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+      
+      - name: Subir APK como artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-debug
+          path: android/app/build/outputs/apk/debug/
