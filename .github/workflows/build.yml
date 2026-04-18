@@ -27,24 +27,27 @@ jobs:
       - name: Instalar dependencias npm
         run: npm install
       
-      - name: Construir web app con Vite
+      - name: Construir web app
         run: npm run build
       
       - name: Instalar Capacitor
         run: npm install @capacitor/cli @capacitor/core @capacitor/android
       
-      - name: Sincronizar con Capacitor
+      - name: Sincronizar Capacitor
         run: npx cap sync
       
-      - name: Dar permisos a Gradle
-        run: chmod +x android/gradlew
+      - name: Forzar Java 17 en Gradle
+        run: |
+          echo "org.gradle.jvmargs=-Xmx2048m" >> android/gradle.properties
+          echo "android.useAndroidX=true" >> android/gradle.properties
+          echo "android.enableJetifier=true" >> android/gradle.properties
       
       - name: Compilar APK
         run: |
           cd android
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --stacktrace
       
-      - name: Subir APK como artefacto
+      - name: Subir APK
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
