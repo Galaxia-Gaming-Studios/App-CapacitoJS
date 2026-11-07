@@ -13,13 +13,21 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v4
 
+      # 1️⃣ PRIMERO pnpm (setup-node lo necesita para la caché)
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      # 2️⃣ AHORA SÍ setup-node con caché pnpm
       - name: Instalar Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'pnpm'
 
-      # 🔥 IMPORTANTE: Java 21 BIEN configurado
+      # 🔥 Java 21 BIEN configurado
       - name: Configurar Java 21
         uses: actions/setup-java@v4
         with:
@@ -27,23 +35,20 @@ jobs:
           java-version: '21'
           cache: gradle
 
-      # 🔥 Verificación (para que no te vuelva loco)
       - name: Verificar Java
         run: java -version
 
+      # 3️⃣ Instalación reproducible (equivalente a `npm ci`)
       - name: Instalar dependencias
-        run: npm ci
-
-      - name: Instalar Capacitor
-        run: npm install @capacitor/cli @capacitor/core @capacitor/android
+        run: pnpm install --frozen-lockfile
 
       - name: Build web
-        run: npm run build
+        run: pnpm run build
 
       - name: Sync Capacitor
-        run: npx cap sync android
+        run: pnpm exec cap sync android
 
-      # 🔥 FORZAR Gradle a usar Java 21
+      # 🔥 Forzar Java 21 en Gradle
       - name: Forzar Java 21 en Gradle
         run: |
           echo "org.gradle.java.home=$JAVA_HOME" >> android/gradle.properties
