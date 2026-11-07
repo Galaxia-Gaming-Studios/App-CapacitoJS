@@ -19,7 +19,7 @@ import ShareExample from '../examples/ShareExample'
 import BrowserExample from '../examples/BrowserExample'
 import DialogExample from '../examples/DialogExample'
 import ToastExample from '../examples/ToastExample'
-import ActionSheetExample from '../examples/ActionSheetExample'
+//import ActionSheetExample from '../examples/ActionSheetExample'
 
 export const router = createBrowserRouter([
   { path: '/', element: <Home /> },
@@ -42,5 +42,5 @@ export const router = createBrowserRouter([
   { path: '/browser', element: <BrowserExample /> },
   { path: '/dialog', element: <DialogExample /> },
   { path: '/toast', element: <ToastExample /> },
-  { path: '/action-sheet', element: <ActionSheetExample /> },
+  //{ path: '/action-sheet', element: <ActionSheetExample /> },
 ])
